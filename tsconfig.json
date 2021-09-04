@@ -4,7 +4,9 @@
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "strict": false,
+    "strictPropertyInitialization": false,
+    "strictNullChecks": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
@@ -31,7 +33,13 @@
       ],
       "@env": [
         "src/environments/environment"
-      ]
+      ],
+      "@layouts/*": [
+        "src/app/layout/*"
+      ],
+      "@fuse/*": [
+        "src/@fuse/*"
+      ],
     }
   },
   "angularCompilerOptions": {
