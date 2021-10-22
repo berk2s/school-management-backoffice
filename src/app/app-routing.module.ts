@@ -5,6 +5,7 @@ import {
   RouterModule,
   Routes,
 } from '@angular/router'
+import { AuthGuard } from '@app/guards/auth.guard'
 import { MainLayoutComponent } from '@layouts/main-layout/main-layout.component'
 
 const routerConfig: ExtraOptions = {
@@ -25,6 +26,7 @@ const routes: Routes = [
   {
     path: 'anasayfa',
     component: MainLayoutComponent,
+    canActivate: [AuthGuard],
     data: {
       layout: 'classic',
     },
@@ -32,6 +34,16 @@ const routes: Routes = [
       import('./modules/dashboard/dashboard.module').then(
         (m) => m.DashboardModule,
       ),
+  },
+  {
+    path: 'akis',
+    component: MainLayoutComponent,
+    canActivate: [AuthGuard],
+    data: {
+      layout: 'classic',
+    },
+    loadChildren: () =>
+      import('./modules/feed/feed.module').then((m) => m.FeedModule),
   },
 ]
 

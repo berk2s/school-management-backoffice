@@ -1,0 +1,135 @@
+<div class="flex flex-auto">
+
+    <form class="flex flex-col flex-auto p-6 pt-10 sm:p-8 sm:pt-10 overflow-y-auto" [formGroup]="feedForm">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between -mt-3 -ml-4">
+
+
+            <div class="flex items-center justify-center">
+                <span class="ml-4 font-semibold">Duyuru Oluştur</span>
+            </div>
+
+            <div class="flex items-center">
+
+                <button mat-icon-button [routerLink]="['../']">
+                  <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+              </button>
+            </div>
+
+        </div>
+
+        <mat-divider class="mt-6 mb-8"></mat-divider>
+
+        <!-- Announcement Title -->
+        <div>
+            <mat-form-field class="fuse-mat-textarea fuse-mat-no-subscript w-full">
+                <mat-label>Başlık</mat-label>
+                <input matInput [formControlName]="'announcementTitle'" [spellcheck]="false" required minlength="2" />
+            </mat-form-field>
+        </div>
+
+        <!-- Announcement Description -->
+        <div class="mt-8">
+            <mat-form-field class="fuse-mat-textarea fuse-mat-no-subscript w-full">
+                <mat-label>Açıklama</mat-label>
+                <textarea matInput [formControlName]="'announcementDescription'" [spellcheck]="false" [matTextareaAutosize]="true" maxlength="99999"></textarea>
+            </mat-form-field>
+        </div>
+
+        <!-- Announcement Images -->
+        <div class="mt-8">
+            <div class="fuse-mat-textarea fuse-mat-no-subscript w-full">
+                <mat-label>Resimler</mat-label> <br />
+                <button class="mt-3" mat-flat-button [color]="'primary'" (click)="imageUploader.click()">
+                  <mat-icon [svgIcon]="'heroicons_outline:cloud-upload'"></mat-icon>
+                  <span class="ml-2 mr-1">Yükle</span>
+                </button>
+                <input type="file" accept="image/*" [formControlName]="'a'" multiple #imageUploader />
+            </div>
+
+            <div class="flex items-center" *ngIf="previews.length > 0">
+                <ng-container *ngFor="let preview of previews">
+
+                    <div class="relative flex flex-0 items-center justify-center w-24 mt-5 h-24 mr-6 rounded overflow-hidden border">
+
+                        <img class="" style="width: 100%!important;height: 100%!important;" [alt]="'Duyuru Resmi'" [src]="preview">
+
+                    </div>
+                </ng-container>
+
+            </div>
+        </div>
+
+        <!-- Announcement Channels -->
+        <div class="flex flex-wrap mt-8">
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-label>Paylaşılacak Kanallar</mat-label>
+
+                <mat-select [formControlName]="'announcementChannels'" multiple required>
+                    <mat-option *ngFor="let announcemnetChannel of getAnnouncementChannels();" [value]="announcemnetChannel">{{announcemnetChannel}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <!-- Announcement Status -->
+        <div class="flex flex-wrap items-center mt-8">
+
+            <div>
+                <div class="font-medium">Durum</div>
+                <div class="flex items-center px-4 leading-9 rounded-full cursor-pointer mt-3" [ngClass]="{'text-red-800 bg-red-200 dark:text-red-100 dark:bg-red-500': announcementStatus.value === false,
+                          'text-green-800 bg-green-200 dark:text-green-100 dark:bg-green-500': announcementStatus.value === true}" [matMenuTriggerFor]="priorityMenu">
+
+
+                    <ng-container *ngIf="announcementStatus.value === true">
+                        <mat-icon class="icon-size-4 text-current" [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                        <span class="ml-2 mr-1 text-md font-medium">Aktif</span>
+                    </ng-container>
+
+
+                    <ng-container *ngIf="announcementStatus.value === false">
+                        <mat-icon class="icon-size-4 text-current" [svgIcon]="'heroicons_solid:x'"></mat-icon>
+                        <span class="ml-2 mr-1 text-md font-medium">Pasif</span>
+                    </ng-container>
+
+                </div>
+                <mat-menu #priorityMenu="matMenu">
+                    <!-- Low -->
+                    <button [ngClass]="{'bg-hover': announcementStatus.value === true}" mat-menu-item (click)="setActivate(true)">
+                      <span class="inline-flex items-center justify-between w-full min-w-30 leading-5">
+                          <span class="font-medium">Aktif</span>
+                          <mat-icon
+                              class="mr-0 icon-size-4 text-green-600 dark:text-green-500"
+                              [svgIcon]="'heroicons_solid:check'"></mat-icon>
+                      </span>
+                  </button>
+
+                    <button [ngClass]="{'bg-hover': announcementStatus.value === false}" mat-menu-item (click)="setActivate(false)">
+                      <span class="inline-flex items-center justify-between w-full min-w-30 leading-5">
+                          <span class="font-medium">Pasif</span>
+                          <mat-icon
+                              class="mr-0 icon-size-4 text-red-600 dark:text-red-500"
+                              [svgIcon]="'heroicons_solid:x'"></mat-icon>
+                      </span>
+                  </button>
+                </mat-menu>
+            </div>
+
+
+        </div>
+
+        <!-- Save Button -->
+        <div class="mt-8">
+            <div style="width:100%;display: flex;flex-direction: row;justify-content: end;">
+                <button [disabled]="feedForm.invalid" class="ml-4" mat-flat-button [color]="'primary'" (click)="save()">
+                  <mat-icon [svgIcon]="'heroicons_outline:save'"></mat-icon>
+                  <span class="ml-2 mr-1">Kaydet</span>
+                </button>
+            </div>
+        </div>
+
+
+
+    </form>
+
+</div>

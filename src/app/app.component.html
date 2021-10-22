@@ -1,1 +1,10 @@
 <router-outlet></router-outlet>
+
+<div *ngIf="showAlert" [@slideInRight]="slideState" class="animated-box alert">
+    <div class="animated-box-content">
+
+        <fuse-alert [type]="alertType" [appearance]="'border'">
+            <span fuseAlertTitle>{{alertTitle}}</span> {{alertContent}}
+        </fuse-alert>
+    </div>
+</div>

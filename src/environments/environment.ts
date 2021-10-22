@@ -3,8 +3,20 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
-};
+  production: false,
+  applicationUrl: 'http://localhost:4200',
+  imgBaseUrl: 'http://192.168.0.33:8080',
+  api: {
+    baseUrl: 'http://192.168.0.33:8080',
+    loginUrl: 'http://192.168.0.33:8080/login',
+    tokenUrl: 'http://192.168.0.33:8080/token',
+    announcement: {
+      url: 'http://192.168.0.33:8080/management/announcements',
+      uploadImage: '/upload/images',
+    },
+    userInfoUrl: 'http://192.168.0.33:8080/userinfo',
+  },
+}
 
 /*
  * For easier debugging in development mode, you can import the following file

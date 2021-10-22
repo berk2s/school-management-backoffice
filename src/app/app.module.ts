@@ -13,6 +13,10 @@ import { AppComponent } from './app.component'
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component'
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 import { ClassicLayoutComponent } from './layout/classic-layout/classic-layout.component'
+import { HTTP_INTERCEPTORS } from '@angular/common/http'
+import { ErrorInterceptor } from '@app/interceptors/error-interceptor'
+import { AuthInterceptor } from '@app/interceptors/auth-interceptor'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +36,18 @@ import { ClassicLayoutComponent } from './layout/classic-layout/classic-layout.c
 
     SharedModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

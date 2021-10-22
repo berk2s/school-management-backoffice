@@ -3,6 +3,9 @@ import { NgForm, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { fuseAnimations } from '@fuse/animations'
 import { FuseAlertType } from '@fuse/components/alert'
+import { map } from 'rxjs/operators'
+import { AuthService } from 'src/app/data/auth/service/auth.service'
+import { LoginRequest } from 'src/app/data/auth/types/auth.types'
 
 @Component({
   selector: 'app-sign-in',
@@ -23,21 +26,54 @@ export class SignInComponent implements OnInit {
   showAlert: boolean = false
 
   constructor(
-    private _activatedRoute: ActivatedRoute,
-    private _formBuilder: FormBuilder,
-    private _router: Router,
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.signInForm = this._formBuilder.group({
-      email: [
-        'hughes.brian@company.com',
-        [Validators.required, Validators.email],
-      ],
-      password: ['admin', Validators.required],
-      rememberMe: [''],
+    this.signInForm = this.formBuilder.group({
+      username: ['username', [Validators.required]],
+      password: ['password', Validators.required],
+      rememberMe: [false],
     })
   }
 
-  signIn(): void {}
+  signIn(): void {
+    if (this.signInForm.invalid) {
+      return
+    }
+
+    this.signInForm.disable()
+
+    const loginRequest: LoginRequest = {
+      username: this.signInForm.get('username').value,
+      password: this.signInForm.get('password').value,
+      scopes: 'profile:manage manage:announcements',
+      rememberMe: this.signInForm.get('rememberMe').value,
+    }
+
+    this.authService.login(loginRequest).subscribe(
+      (res) => {
+        this.showAlert = true
+        this.alert = {
+          type: 'success',
+          message: 'Giriş başarılı, lütfen bekleyiniz...',
+        }
+
+        this.router.navigateByUrl('/anasayfa')
+      },
+      (err) => {
+        this.showAlert = true
+        this.alert = {
+          type: 'error',
+          message: err.error.code,
+        }
+        this.signInForm.enable()
+      },
+      () => {
+        this.signInForm.enable()
+      },
+    )
+  }
 }
