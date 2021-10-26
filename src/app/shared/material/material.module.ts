@@ -22,6 +22,7 @@ import { MatTableModule } from '@angular/material/table'
 import { MatSortModule } from '@angular/material/sort'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { MatProgressBarModule } from '@angular/material/progress-bar'
+import { MatDialogModule } from '@angular/material/dialog'
 
 @NgModule({
   declarations: [],
@@ -50,6 +51,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar'
     MatProgressSpinnerModule,
     MatPaginatorModule,
     MatProgressBarModule,
+    MatDialogModule,
   ],
   exports: [
     MatButtonModule,
@@ -76,6 +78,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar'
     MatProgressSpinnerModule,
     MatPaginatorModule,
     MatProgressBarModule,
+    MatDialogModule,
   ],
 })
 export class MaterialModule {}

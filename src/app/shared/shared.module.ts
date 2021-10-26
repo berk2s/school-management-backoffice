@@ -8,9 +8,14 @@ import { HttpClientModule } from '@angular/common/http'
 import { ErrorTranslatePipe } from '@shared/pipes/error-translate.pipe'
 import { UserDropdownComponent } from './components/layout/user-dropdown/user-dropdown.component'
 import { FuseFindByKeyPipeModule } from '@fuse/pipes/find-by-key'
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component'
 
 @NgModule({
-  declarations: [ErrorTranslatePipe, UserDropdownComponent],
+  declarations: [
+    ErrorTranslatePipe,
+    UserDropdownComponent,
+    ConfirmationDialogComponent,
+  ],
   imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
   exports: [
     FormsModule,

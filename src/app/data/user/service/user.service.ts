@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { environment } from '@env'
 import { Observable, ReplaySubject, Subject } from 'rxjs'
-import { exhaustMap, tap } from 'rxjs/operators'
-import { AuthService } from '../../auth/service/auth.service'
+import { shareReplay, tap } from 'rxjs/operators'
 import { User } from '../types/user.types'
 
 @Injectable({
@@ -15,8 +14,9 @@ export class UserService {
   constructor(private httpClient: HttpClient) {}
 
   getUserInfo(): Observable<User> {
-    return this.httpClient
-      .get<User>(environment.api.userInfoUrl)
-      .pipe(tap((user: User) => this.user.next(user)))
+    return this.httpClient.get<User>(environment.api.userInfoUrl).pipe(
+      tap((user: User) => this.user.next(user)),
+      shareReplay(),
+    )
   }
 }

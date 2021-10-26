@@ -1,13 +1,4 @@
-import { Overlay } from '@angular/cdk/overlay'
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  ViewContainerRef,
-} from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import {
   AbstractControl,
   FormBuilder,
@@ -15,15 +6,20 @@ import {
   Validators,
 } from '@angular/forms'
 import { AlertService } from '@app/alert/alert.service'
-import { Observable, of } from 'rxjs'
-import { exhaustMap } from 'rxjs/operators'
+import { Observable } from 'rxjs'
+import {
+  debounceTime,
+  exhaustMap,
+  take,
+  throttle,
+  throttleTime,
+  withLatestFrom,
+} from 'rxjs/operators'
 import { FeedService } from 'src/app/data/feed/service/feed.service'
 import {
-  Announcement,
   AnnouncementChannel,
   CreatingAnnouncement,
 } from 'src/app/data/feed/types/feed.types'
-import { OrganizationService } from 'src/app/data/organization/service/orgazation.service'
 import { FeedListComponent } from '../feed-list/feed-list.component'
 
 @Component({
@@ -59,14 +55,9 @@ export class CreateFeedComponent implements OnInit, OnDestroy {
       announcementDescription: [''],
       announcementChannels: [[], Validators.required],
       announcementStatus: [true],
-      a: [],
     })
 
     this.announcementStatus = this.feedForm.controls['announcementStatus']
-
-    this.feedForm.controls['a'].valueChanges.subscribe(($event) => {
-      this.selectFiles(this.feedForm.controls['a'].value)
-    })
   }
 
   ngOnDestroy(): void {
@@ -125,14 +116,25 @@ export class CreateFeedComponent implements OnInit, OnDestroy {
 
     this.feedService
       .saveAnnouncement(creatingAnnouncement)
-      // .pipe(
-      //   exhaustMap((announcement: Announcement) => {
-      //     return this.feedService.uploadImages(
-      //       announcement.announcementId,
-      //       )
-      //   }),
-      // )
-      .subscribe((_) => {
+      .pipe(
+        take(1),
+        withLatestFrom(this.feedService.pagination$),
+        exhaustMap((data) => {
+          const pagination = data[1]
+          return this.feedService
+            .getAnnouncements(
+              pagination.page,
+              pagination.size,
+              pagination.sortedBy,
+              pagination.order,
+            )
+            .pipe(take(1))
+        }),
+      )
+      .subscribe(() => {
+        this.feedForm.reset()
+        this.announcementStatus.setValue(true)
+
         this.alertService.sendMessage({
           alertTitle: 'Başarılı',
           alertContent: 'Duyuru başarılı bir şekilde oluşturuldu',

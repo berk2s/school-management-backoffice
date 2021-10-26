@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { CreateFeedComponent } from './page/create-feed/create-feed.component'
 import { FeedListComponent } from './page/feed-list/feed-list.component'
+import { UpdateFeedComponent } from './page/update-feed/update-feed.component'
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
       {
         path: 'ekle',
         component: CreateFeedComponent,
+      },
+      {
+        path: 'duzenle/:announcementId',
+        component: UpdateFeedComponent,
       },
     ],
   },

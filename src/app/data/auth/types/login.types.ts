@@ -11,14 +11,3 @@ export interface LoginResponse {
   expiresIn: number
   scopes?: string
 }
-
-type GrantType = 'check_token' | 'refresh_token' | 'revoke'
-
-export interface TokenRequest {
-  grant_type?: GrantType
-  client_id?: string
-  refresh_token?: string
-  access_token?: string
-  scopes?: string[] | string
-  username?: string
-}

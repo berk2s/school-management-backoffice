@@ -45,6 +45,18 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/feed/feed.module').then((m) => m.FeedModule),
   },
+  {
+    path: 'organizasyon',
+    component: MainLayoutComponent,
+    canActivate: [AuthGuard],
+    data: {
+      layout: 'classic',
+    },
+    loadChildren: () =>
+      import('./modules/organization/organization.module').then(
+        (m) => m.OrganizationModule,
+      ),
+  },
 ]
 
 @NgModule({

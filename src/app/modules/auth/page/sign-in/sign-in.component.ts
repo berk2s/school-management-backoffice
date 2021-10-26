@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core'
 import { NgForm, FormGroup, FormBuilder, Validators } from '@angular/forms'
-import { ActivatedRoute, Router } from '@angular/router'
+import { Router } from '@angular/router'
 import { fuseAnimations } from '@fuse/animations'
 import { FuseAlertType } from '@fuse/components/alert'
-import { map } from 'rxjs/operators'
 import { AuthService } from 'src/app/data/auth/service/auth.service'
-import { LoginRequest } from 'src/app/data/auth/types/auth.types'
+import { LoginRequest } from 'src/app/data/auth/types/login.types'
 
 @Component({
   selector: 'app-sign-in',
@@ -49,7 +48,7 @@ export class SignInComponent implements OnInit {
     const loginRequest: LoginRequest = {
       username: this.signInForm.get('username').value,
       password: this.signInForm.get('password').value,
-      scopes: 'profile:manage manage:announcements',
+      scopes: 'profile:manage',
       rememberMe: this.signInForm.get('rememberMe').value,
     }
 

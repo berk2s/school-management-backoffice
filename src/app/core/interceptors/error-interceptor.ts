@@ -7,8 +7,9 @@ import {
 } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { AlertService } from '@app/alert/alert.service'
-import { Observable, throwError } from 'rxjs'
-import { catchError, finalize, tap } from 'rxjs/operators'
+import { Observable } from 'rxjs'
+import { finalize, tap } from 'rxjs/operators'
+import { translateMessage } from 'src/app/helper/error-response.helper'
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +27,16 @@ export class ErrorInterceptor implements HttpInterceptor {
         (event) => (ok = event instanceof HttpResponse ? 'succeeded' : ''),
         (error) => {
           ok = 'failed'
-          console.log(error)
+          const translatedMessage = translateMessage(
+            error.error.code ? error.error.code : -1,
+          )
+          if (translatedMessage.trim() !== 'Bilinmeyen bir hata') {
+            this.alertService.sendMessage({
+              alertTitle: 'Bir şeyler ters gitti',
+              alertContent: translatedMessage,
+              alertType: 'warning',
+            })
+          }
         },
       ),
       finalize(() => {
@@ -38,11 +48,6 @@ export class ErrorInterceptor implements HttpInterceptor {
           })
         }
         console.log('The request has been finalized as', ok)
-      }),
-      catchError((err) => {
-        return throwError({
-          error: { code: -1, message: err ? err : 'Unexcepted error' },
-        })
       }),
     )
   }

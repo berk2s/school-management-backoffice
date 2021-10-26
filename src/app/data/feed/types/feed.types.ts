@@ -4,9 +4,8 @@ export interface FeedPagination {
   length: number
   size: number
   page: number
-  lastPage: number
-  startIndex: number
-  endIndex: number
+  sortedBy: string
+  order: 'asc' | 'desc'
 }
 
 export enum AnnouncementChannel {
@@ -21,6 +20,7 @@ export interface Announcement {
   announcementTitle: string
   announcementDescription?: string
   announcementChannels: AnnouncementChannel[]
+  announcementStatus: boolean
   organization: Organization
   createdAt: Date
   lastModifiedAt: Date

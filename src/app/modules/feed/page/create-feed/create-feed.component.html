@@ -45,7 +45,7 @@
                   <mat-icon [svgIcon]="'heroicons_outline:cloud-upload'"></mat-icon>
                   <span class="ml-2 mr-1">Yükle</span>
                 </button>
-                <input type="file" accept="image/*" [formControlName]="'a'" multiple #imageUploader />
+                <input type="file" accept="image/*" multiple #imageUploader />
             </div>
 
             <div class="flex items-center" *ngIf="previews.length > 0">
@@ -127,8 +127,6 @@
                 </button>
             </div>
         </div>
-
-
 
     </form>
 

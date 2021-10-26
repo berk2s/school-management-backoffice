@@ -17,7 +17,7 @@ const errorMessages = [
   },
   {
     code: 4,
-    message: 'Kullanıcı yetkisiz',
+    message: 'Yetkisiz kullanıcı',
   },
   {
     code: 5,
@@ -70,6 +70,98 @@ const errorMessages = [
   {
     code: 17,
     message: 'Sunucu hatası',
+  },
+  {
+    code: 18,
+    message: 'Böyle bir duyuru bulunamadı',
+  },
+  {
+    code: 19,
+    message: 'Böyle bir organizasyon bulunamadı',
+  },
+  {
+    code: 20,
+    message: 'Böyle bir şube bulunamadı',
+  },
+  {
+    code: 21,
+    message: 'Böyle bir ders bulunamadı',
+  },
+  {
+    code: 22,
+    message: 'Böyle bir ders programı bulunamadı',
+  },
+  {
+    code: 23,
+    message: 'Böyle bir devamsızlık bulunamadı',
+  },
+  {
+    code: 24,
+    message: 'Geçersiz oturum',
+  },
+  {
+    code: 25,
+    message: 'Böyle bir ödev bulunamadı',
+  },
+  {
+    code: 26,
+    message: 'Böyle bir kişisel ödev bulunamadı',
+  },
+  {
+    code: 27,
+    message: 'Böyle bir sınav tipi bulunamadı',
+  },
+  {
+    code: 28,
+    message: 'Böyle bir sınav iskeleti bulunamadı',
+  },
+  {
+    code: 29,
+    message: 'Böyle bir sınav bulunamadı',
+  },
+  {
+    code: 30,
+    message: 'Böyle bir sınav alanı bulunamadı',
+  },
+  {
+    code: 31,
+    message: 'Dosya okunamadı',
+  },
+  {
+    code: 32,
+    message: 'Öğrenci sütunu tanımlanmamış',
+  },
+  {
+    code: 33,
+    message: 'Sınıf sütunu tanımlanmamış',
+  },
+  {
+    code: 34,
+    message: 'Şube sütunu tanımlanmamış',
+  },
+  {
+    code: 35,
+    message: 'Sınav sütunu tanımlanmamış',
+  },
+  {
+    code: 36,
+    message: 'Sıralama sütunu tanımlanmamış',
+  },
+  {
+    code: 37,
+    message: 'Sınav sonucu bulunamadı',
+  },
+  {
+    code: 38,
+    message: 'Sınav sonuç parçası bulunamadı',
+  },
+  {
+    code: 39,
+    message: 'Böyle bir şikayet veya öneri bulunamadı',
+  },
+  {
+    code: 40,
+    message: 'Böyle bir yazışma bulunamadı',
   },
 ]
 

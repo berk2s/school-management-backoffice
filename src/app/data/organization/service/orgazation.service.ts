@@ -10,6 +10,8 @@ export class OrganizationService {
   constructor() {}
 
   setOrganizationId(organizationId: number) {
+    console.log("I'm changed but it may be same then value as before")
+
     this.organizationId.next(organizationId)
   }
 

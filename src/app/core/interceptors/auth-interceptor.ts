@@ -6,13 +6,13 @@ import {
 } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import { environment } from '@env'
-import { concat, merge, Observable } from 'rxjs'
-import { concatMap } from 'rxjs/operators'
-import { AuthService } from 'src/app/data/auth/service/auth.service'
+import { combineLatest, Observable } from 'rxjs'
+import { exhaustMap, take } from 'rxjs/operators'
+import { TokenService } from 'src/app/data/token/service/token.service'
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor(private tokenService: TokenService) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -25,12 +25,12 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(req)
     }
 
-    const accessToken = this.authService.accessToken$
-
-    return accessToken.pipe(
-      concatMap((accessToken: string) => {
+    return combineLatest([this.tokenService.accessToken]).pipe(
+      take(1),
+      exhaustMap((data) => {
+        const accessToken = data[0]
         const authenticatedRequest = req.clone({
-          headers: req.headers.set('Authorization', 'Bearer ' + accessToken),
+          headers: req.headers.set(`Authorization`, `Bearer ${accessToken}`),
         })
 
         return next.handle(authenticatedRequest)

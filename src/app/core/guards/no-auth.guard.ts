@@ -8,8 +8,8 @@ import {
 } from '@angular/router'
 import { Observable, of } from 'rxjs'
 import { exhaustMap } from 'rxjs/operators'
-import { AuthService } from 'src/app/data/auth/service/auth.service'
 import { ScopeService } from 'src/app/data/scope/service/scope.service'
+import { TokenService } from 'src/app/data/token/service/token.service'
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ import { ScopeService } from 'src/app/data/scope/service/scope.service'
 export class NoAuthGuard implements CanActivate {
   constructor(
     private router: Router,
-    private authService: AuthService,
+    private tokenService: TokenService,
     private scopeService: ScopeService,
   ) {}
 
@@ -31,7 +31,7 @@ export class NoAuthGuard implements CanActivate {
     | UrlTree {
     const scope = this.scopeService.getScope(route.routeConfig.path)
 
-    return this.authService.check(scope).pipe(
+    return this.tokenService.checkTokens(scope).pipe(
       exhaustMap((status) => {
         if (status === true) {
           return of(this.router.createUrlTree(['/anasayfa']))
