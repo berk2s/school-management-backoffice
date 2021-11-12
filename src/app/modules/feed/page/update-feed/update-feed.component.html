@@ -43,15 +43,88 @@
                 <!-- Announcement Images -->
                 <div class="mt-8">
                     <div class="fuse-mat-textarea fuse-mat-no-subscript w-full">
-                        <mat-label>Resimler</mat-label> <br />
-                        <button class="mt-3" mat-flat-button [color]="'primary'" (click)="imageUploader.click()">
-                      <mat-icon [svgIcon]="'heroicons_outline:cloud-upload'"></mat-icon>
-                      <span class="ml-2 mr-1">Yükle</span>
-                    </button>
-                        <input type="file" accept="image/*" hidden multiple #imageUploader />
+                        <span style="color:#000; font-weight:500">Resimler</span> <br />
+                        <button class="mt-3" mat-flat-button [color]="'primary'" (click)="imageUploader.click(); $event.preventDefault()">
+                          <mat-icon [svgIcon]="'heroicons_outline:cloud-upload'"></mat-icon>
+                          <span class="ml-2 mr-1">Yükle</span>
+                        </button>
+                        <input type="file" accept="image/*" multiple hidden (change)="onImageChange($event)" #imageUploader />
+
                     </div>
 
 
+                    <div class="flex flex-wrap " style="flex-direction: column;" *ngIf="imagePreviews.length > 0">
+                        <h3 style="padding-top:15px">
+                            Yeni eklenenler
+                        </h3>
+                        <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+
+                            <ng-container *ngFor="let preview of imagePreviews">
+
+                                <div class="relative flex flex-0 w-20 mt-5 mr-5  " style="display: flex; flex-direction: column;">
+
+                                    <div class="w-20 h-20 rounded border">
+                                        <img class="" style="width: 100%!important;height: 100%!important;" [alt]="'Duyuru Resmi'" [src]="preview.src">
+
+                                        <div style="position: absolute;right: -8;top: -9px;right: -8px;background: #f1f1f1;display: flex;justify-content: center;align-items: center;border-radius: 8px;">
+                                            <button style=" width: 24px;
+                          height: 24px;
+                          display: flex;
+                          justify-content: center;
+                          align-items: center;" (click)="deletePreviewImage(preview.id)">
+                          <mat-icon style="  min-width: 18px;
+                          min-height: 18px;
+                          width: 18px;
+                          height: 18px;" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                        </button>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </ng-container>
+                        </div>
+
+                    </div>
+
+                    <div class="flex flex-wrap " style="flex-direction: column;" *ngIf="announcement.announcementImages && announcement.announcementImages.length > 0">
+                        <h3 style="padding-top:15px">
+                            Mevcut resimler
+                        </h3>
+                        <div style="display: flex; flex-direction: row; flex-wrap: wrap">
+
+                            <ng-container *ngFor="let announcementImage of announcement.announcementImages">
+
+                                <div class="relative flex flex-0 w-20 mt-5 mr-5  " style="display: flex; flex-direction: column;">
+
+                                    <div class="w-20 h-20 rounded border">
+                                        <img class="" style="width: 100%!important;height: 100%!important;" [alt]="'Duyuru Resmi'" [src]="imgUrl + announcementImage.imageUrl">
+
+                                        <div style="position: absolute;right: -8;top: -9px;right: -8px;background: #f1f1f1;display: flex;justify-content: center;align-items: center;border-radius: 8px;">
+                                            <button style=" width: 24px;
+                                    height: 24px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;" (click)="deleteImage(announcementImage.imageUrl)">
+                                    <mat-icon style="  min-width: 18px;
+                                    min-height: 18px;
+                                    width: 18px;
+                                    height: 18px;" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                                  </button>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+                            </ng-container>
+
+                        </div>
+
+                    </div>
                 </div>
 
                 <!-- Announcement Channels -->
@@ -70,17 +143,17 @@
 
                     <div>
                         <div class="font-medium">Durum</div>
-                        <div class="flex items-center px-4 leading-9 rounded-full cursor-pointer mt-3" [ngClass]="{'text-red-800 bg-red-200 dark:text-red-100 dark:bg-red-500': announcement.announcementStatus === false,
-                              'text-green-800 bg-green-200 dark:text-green-100 dark:bg-green-500': announcement.announcementStatus === true}" [matMenuTriggerFor]="priorityMenu">
+                        <div class="flex items-center px-4 leading-9 rounded-full cursor-pointer mt-3" [ngClass]="{'text-red-800 bg-red-200 dark:text-red-100 dark:bg-red-500': announcementStatus.value === false,
+                              'text-green-800 bg-green-200 dark:text-green-100 dark:bg-green-500': announcementStatus.value === true}" [matMenuTriggerFor]="priorityMenu">
 
 
-                            <ng-container *ngIf="announcement.announcementStatus === true">
+                            <ng-container *ngIf="announcementStatus.value === true">
                                 <mat-icon class="icon-size-4 text-current" [svgIcon]="'heroicons_solid:check'"></mat-icon>
                                 <span class="ml-2 mr-1 text-md font-medium">Aktif</span>
                             </ng-container>
 
 
-                            <ng-container *ngIf="announcement.announcementStatus === false">
+                            <ng-container *ngIf="announcementStatus.value === false">
                                 <mat-icon class="icon-size-4 text-current" [svgIcon]="'heroicons_solid:x'"></mat-icon>
                                 <span class="ml-2 mr-1 text-md font-medium">Pasif</span>
                             </ng-container>
@@ -88,7 +161,7 @@
                         </div>
                         <mat-menu #priorityMenu="matMenu">
                             <!-- Low -->
-                            <button [ngClass]="{'bg-hover': announcement.announcementStatus === true}" mat-menu-item (click)="setActivate(true)">
+                            <button [ngClass]="{'bg-hover': announcementStatus.value === true}" mat-menu-item (click)="setActivate(true)">
                           <span class="inline-flex items-center justify-between w-full min-w-30 leading-5">
                               <span class="font-medium">Aktif</span>
                               <mat-icon
@@ -97,7 +170,7 @@
                           </span>
                       </button>
 
-                            <button [ngClass]="{'bg-hover': announcement.announcementStatus === false}" mat-menu-item (click)="setActivate(false)">
+                            <button [ngClass]="{'bg-hover': announcementStatus.value === false}" mat-menu-item (click)="setActivate(false)">
                           <span class="inline-flex items-center justify-between w-full min-w-30 leading-5">
                               <span class="font-medium">Pasif</span>
                               <mat-icon
@@ -114,7 +187,7 @@
                 <!-- Save Button -->
                 <div class="mt-8">
                     <div style="width:100%;display: flex;flex-direction: row;justify-content: end;">
-                        <button [disabled]="announcementForm.invalid" class="ml-4" mat-flat-button [color]="'primary'" (click)="update()">
+                        <button [disabled]="announcementForm.invalid || !announcementForm.enabled" class="ml-4" mat-flat-button [color]="'primary'" (click)="update()">
                       <mat-icon [svgIcon]="'heroicons_outline:save'"></mat-icon>
                       <span class="ml-2 mr-1">Güncelle</span>
                     </button>

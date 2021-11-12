@@ -20,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     if (
       req.url.startsWith(environment.api.loginUrl) ||
-      !req.url.startsWith('http://')
+      (!req.url.startsWith('http://') && !req.url.startsWith('/api'))
     ) {
       return next.handle(req)
     }
@@ -29,6 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
       take(1),
       exhaustMap((data) => {
         const accessToken = data[0]
+
         const authenticatedRequest = req.clone({
           headers: req.headers.set(`Authorization`, `Bearer ${accessToken}`),
         })

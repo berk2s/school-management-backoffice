@@ -102,7 +102,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'Öğrenciler',
         type: 'basic',
         icon: 'heroicons_outline:user-group',
-        link: '/apps/academy',
+        link: '/ogrenciler',
       },
       {
         id: 'users.teachers',

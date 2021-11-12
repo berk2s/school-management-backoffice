@@ -5,7 +5,6 @@
         <!-- Header -->
         <div class="flex items-center justify-between -mt-3 -ml-4">
 
-
             <div class="flex items-center justify-center">
                 <span class="ml-4 font-semibold">Duyuru Oluştur</span>
             </div>
@@ -40,20 +39,38 @@
         <!-- Announcement Images -->
         <div class="mt-8">
             <div class="fuse-mat-textarea fuse-mat-no-subscript w-full">
-                <mat-label>Resimler</mat-label> <br />
-                <button class="mt-3" mat-flat-button [color]="'primary'" (click)="imageUploader.click()">
+                <span style="color:#000; font-weight:500">Resimler</span> <br />
+                <button class="mt-3" mat-flat-button [color]="'primary'" (click)="imageUploader.click(); $event.preventDefault()">
                   <mat-icon [svgIcon]="'heroicons_outline:cloud-upload'"></mat-icon>
                   <span class="ml-2 mr-1">Yükle</span>
                 </button>
-                <input type="file" accept="image/*" multiple #imageUploader />
+                <input type="file" accept="image/*" multiple hidden (change)="onImageChange($event)" #imageUploader />
             </div>
 
-            <div class="flex items-center" *ngIf="previews.length > 0">
-                <ng-container *ngFor="let preview of previews">
+            <div class="flex flex-wrap " *ngIf="imagePreviews.length > 0">
+                <ng-container *ngFor="let preview of imagePreviews">
 
-                    <div class="relative flex flex-0 items-center justify-center w-24 mt-5 h-24 mr-6 rounded overflow-hidden border">
+                    <div class="relative flex flex-0 w-20 mt-5 mr-5  " style="display: flex; flex-direction: column; ">
 
-                        <img class="" style="width: 100%!important;height: 100%!important;" [alt]="'Duyuru Resmi'" [src]="preview">
+                        <div class="w-20 h-20 rounded border">
+                            <img class="" style="width: 100%!important;height: 100%!important;" [alt]="'Duyuru Resmi'" [src]="preview.src">
+
+                            <div style="position: absolute;right: -8;top: -9px;right: -8px;background: #f1f1f1;display: flex;justify-content: center;align-items: center;border-radius: 8px;">
+                                <button style=" width: 24px;
+                                height: 24px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;" (click)="deletePreviewImage(preview.id)">
+                                <mat-icon style="  min-width: 18px;
+                                min-height: 18px;
+                                width: 18px;
+                                height: 18px;" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                              </button>
+                            </div>
+
+                        </div>
+
+
 
                     </div>
                 </ng-container>
@@ -121,7 +138,7 @@
         <!-- Save Button -->
         <div class="mt-8">
             <div style="width:100%;display: flex;flex-direction: row;justify-content: end;">
-                <button [disabled]="feedForm.invalid" class="ml-4" mat-flat-button [color]="'primary'" (click)="save()">
+                <button [disabled]="feedForm.invalid || !feedForm.enabled" class="ml-4" mat-flat-button [color]="'primary'" (click)="save()">
                   <mat-icon [svgIcon]="'heroicons_outline:save'"></mat-icon>
                   <span class="ml-2 mr-1">Kaydet</span>
                 </button>

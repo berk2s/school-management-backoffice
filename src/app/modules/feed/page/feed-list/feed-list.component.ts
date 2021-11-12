@@ -1,13 +1,4 @@
-import {
-  AfterContentChecked,
-  AfterContentInit,
-  AfterViewChecked,
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core'
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core'
 import { Observable, of, Subject } from 'rxjs'
 import { FeedService } from 'src/app/data/feed/service/feed.service'
 import {
@@ -53,7 +44,7 @@ export class FeedListComponent implements OnInit, OnDestroy {
   searchInputControl: FormControl = new FormControl()
 
   isLoading: boolean = true
-  imgBaseUrl: string
+  imgUrl: string
 
   private _unsubscribeAll: Subject<any> = new Subject<any>()
 
@@ -65,7 +56,7 @@ export class FeedListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.imgBaseUrl = environment.imgBaseUrl
+    this.imgUrl = `${environment.imageUrls.imageBaseUrl}/`
 
     this.sort = {
       active: 'createdAt',

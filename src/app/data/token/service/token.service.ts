@@ -91,14 +91,23 @@ export class TokenService {
       })
   }
 
-  checkTokens(scope: string): Observable<boolean> {
-    return combineLatest([this.accessToken, this.scopes]).pipe(
+  checkTokens(): Observable<boolean> {
+    return combineLatest([this.accessToken]).pipe(
       take(1),
-      exhaustMap((data) => {
-        const accessToken = data[0]
-        const scopes = data[1]
+      exhaustMap(([accessToken]) => {
+        if(!accessToken) {
+          return of(false);
+        }
 
-        if (!accessToken || accessToken.trim() == '') {
+        return this.checkAccessTokenRequest();
+      })
+    )
+  }
+
+  checkPermission(scope: string): Observable<boolean> {
+    return combineLatest([this.scopes]).pipe(
+      take(1),
+      exhaustMap(([scopes]) => {
           return this.refreshTokens(scope ? scope : scopes).pipe(
             switchMap(() => {
               return of(true)
@@ -107,9 +116,6 @@ export class TokenService {
               return of(false)
             }),
           )
-        }
-
-        return this.checkAccessTokenRequest()
       }),
     )
   }

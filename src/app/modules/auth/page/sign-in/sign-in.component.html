@@ -25,7 +25,11 @@
                 <!-- Email field -->
                 <mat-form-field class="w-full">
                     <mat-label>Kullanıcı adı</mat-label>
-                    <input id="username" matInput [formControlName]="'username'" placeholder="Kullanıcı adı">
+                    <input
+                      id="username"
+                      matInput
+                      [formControlName]="'username'"
+                      placeholder="Kullanıcı adı">
                     <mat-error *ngIf="signInForm.get('username').hasError('required')">
                         Kullanıcı adını boş bırakmayın
                     </mat-error>

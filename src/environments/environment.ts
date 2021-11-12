@@ -6,15 +6,23 @@ export const environment = {
   production: false,
   applicationUrl: 'http://localhost:4200',
   imgBaseUrl: 'http://192.168.0.33:8080',
+  imageUrls: {
+    imageBaseUrl:
+      'https://school-management-ozsen.s3.eu-central-1.amazonaws.com',
+    paths: {
+      announcement: 'announcements',
+    },
+  },
   api: {
     baseUrl: 'http://192.168.0.33:8080',
-    loginUrl: 'http://192.168.0.33:8080/login',
-    tokenUrl: 'http://192.168.0.33:8080/token',
+    loginUrl: '/api/login',
+    tokenUrl: '/api/token',
     announcement: {
-      url: 'http://192.168.0.33:8080/management/announcements',
-      uploadImage: '/upload/images',
+      url: '/api/management/announcements',
+      uploadImage: 'upload/images',
+      deleteImage: 'delete/images',
     },
-    userInfoUrl: 'http://192.168.0.33:8080/userinfo',
+    userInfoUrl: '/api/userinfo',
   },
 }
 

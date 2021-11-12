@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate {
     | UrlTree {
     const scope = this.scopeService.getScope(route.routeConfig.path)
 
-    return this.tokenService.checkTokens(scope).pipe(
+    return this.tokenService.checkPermission(scope).pipe(
       exhaustMap((status) => {
         if (status === false) {
           return of(this.router.createUrlTree(['/oturum/giris']))

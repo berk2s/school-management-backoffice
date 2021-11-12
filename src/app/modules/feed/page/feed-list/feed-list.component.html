@@ -69,7 +69,7 @@
                                             <!-- Image -->
                                             <div class="flex items-center">
                                                 <div class="relative flex flex-0 items-center justify-center w-12 h-12 mr-6 rounded overflow-hidden border">
-                                                    <img class="w-8" *ngIf="announcement.announcementImages[0]" [alt]="'Product thumbnail image'" [src]="imgBaseUrl+ '/' + announcement.announcementImages[0]">
+                                                    <img class="w-8" *ngIf="announcement.announcementImages[0]" [alt]="'RESIM'" [src]="imgUrl + announcement.announcementImages[0].imageUrl">
                                                     <div class="flex items-center justify-center w-full h-full text-xs font-semibold leading-none text-center uppercase" *ngIf="!announcement.announcementImages[0]">
                                                         RESİM YOK
                                                     </div>

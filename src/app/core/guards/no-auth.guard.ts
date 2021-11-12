@@ -31,7 +31,7 @@ export class NoAuthGuard implements CanActivate {
     | UrlTree {
     const scope = this.scopeService.getScope(route.routeConfig.path)
 
-    return this.tokenService.checkTokens(scope).pipe(
+    return this.tokenService.checkPermission(scope).pipe(
       exhaustMap((status) => {
         if (status === true) {
           return of(this.router.createUrlTree(['/anasayfa']))

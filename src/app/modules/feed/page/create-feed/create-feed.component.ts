@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms'
 import { AlertService } from '@app/alert/alert.service'
+import { ImagePreview } from '@modules/feed/types'
 import { Observable } from 'rxjs'
 import {
   debounceTime,
@@ -31,14 +32,8 @@ export class CreateFeedComponent implements OnInit, OnDestroy {
   feedForm: FormGroup
   announcementStatus: AbstractControl
 
-  selectedFiles?: FileList
-  selectedFileNames: string[] = []
-
-  progressInfos: any[] = []
-  message: string[] = []
-
-  previews: string[] = []
-  imageInfos: Observable<any>
+  selectedFiles?: File[] = []
+  imagePreviews: ImagePreview[] = []
 
   constructor(
     private formBuilder: FormBuilder,
@@ -68,33 +63,6 @@ export class CreateFeedComponent implements OnInit, OnDestroy {
     this.feedForm.controls['announcementStatus'].setValue(value)
   }
 
-  selectFiles($event: any): void {
-    const self = this
-    self.message = []
-    self.progressInfos = []
-    self.selectedFileNames = []
-    self.selectFiles = $event.target.files
-    self.previews = []
-
-    if (self.selectFiles && self.selectFiles[0]) {
-      const numberOfFiles = self.selectFiles.length
-
-      for (let i = 0; i < numberOfFiles; i++) {
-        if ($event.target.files[i]) {
-          const reader = new FileReader()
-
-          reader.onload = (e: any) => {
-            self.previews.push(e.target.result)
-          }
-
-          reader.readAsDataURL(self.selectFiles[i])
-
-          self.selectedFileNames.push(self.selectFiles[i].name)
-        }
-      }
-    }
-  }
-
   save(): void {
     const announcementChannelArr = []
 
@@ -112,7 +80,10 @@ export class CreateFeedComponent implements OnInit, OnDestroy {
     const creatingAnnouncement: CreatingAnnouncement = {
       ...this.feedForm.value,
       announcementChannels: announcementChannelArr,
+      images: this.selectedFiles,
     }
+
+    this.feedForm.disable()
 
     this.feedService
       .saveAnnouncement(creatingAnnouncement)
@@ -131,9 +102,12 @@ export class CreateFeedComponent implements OnInit, OnDestroy {
             .pipe(take(1))
         }),
       )
-      .subscribe(() => {
+      .subscribe((data) => {
         this.feedForm.reset()
+        this.feedForm.enable()
         this.announcementStatus.setValue(true)
+        this.selectedFiles = []
+        this.imagePreviews = []
 
         this.alertService.sendMessage({
           alertTitle: 'Başarılı',
@@ -141,6 +115,45 @@ export class CreateFeedComponent implements OnInit, OnDestroy {
           alertType: 'success',
         })
       })
+  }
+
+  onImageChange(event: any) {
+    const files = event.target.files
+
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader()
+
+      const file = files[i]
+
+      reader.readAsDataURL(file)
+
+      reader.onload = () => {
+        if (
+          this.selectedFiles.findIndex(
+            (i) => i.lastModified === file.lastModified,
+          ) === -1
+        ) {
+          this.selectedFiles.push(file)
+          this.imagePreviews.push({
+            id: file.lastModified,
+            src: reader.result as string,
+            name: file.name,
+          })
+        }
+      }
+    }
+  }
+
+  deletePreviewImage(id: number) {
+    const indexOfSelected = this.selectedFiles.findIndex(
+      (i) => i.lastModified === id,
+    )
+    const indexOfPreview = this.imagePreviews.findIndex((i) => i.id === id)
+
+    if (indexOfSelected !== -1 && indexOfPreview !== -1) {
+      this.selectedFiles.splice(indexOfSelected, 1)
+      this.imagePreviews.splice(indexOfPreview, 1)
+    }
   }
 
   getAnnouncementChannels() {

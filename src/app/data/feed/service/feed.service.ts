@@ -1,21 +1,21 @@
-import { HttpClient, HttpEvent, HttpParams } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { Injectable } from '@angular/core'
 import {
   Announcement,
   AnnouncementImage,
   CreatingAnnouncement,
   FeedPagination,
+  UpdatingAnnouncement,
 } from 'src/app/data/feed/types/feed.types'
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs'
 import { environment } from '@env'
 import {
   exhaustMap,
-  first,
+  map,
+  mergeMap,
   shareReplay,
-  switchMap,
   take,
   tap,
-  throttleTime,
 } from 'rxjs/operators'
 import { OrganizationService } from '../../organization/service/orgazation.service'
 import { Page } from '../../page.types'
@@ -108,9 +108,60 @@ export class FeedService {
             ...creatingAnnouncement,
             organizationId: organizationId,
           })
-          .pipe(shareReplay())
+          .pipe(
+            shareReplay(),
+            exhaustMap((announcement) => {
+              if (creatingAnnouncement.images.length == 0) {
+                return of(announcement)
+              }
+
+              return this.uploadImage(
+                announcement.announcementId,
+                creatingAnnouncement.images,
+              ).pipe(map(() => announcement))
+            }),
+          )
       }),
     )
+  }
+
+  updateAnnouncement(
+    announcementId: number,
+    updatingAnnouncement: UpdatingAnnouncement,
+  ) {
+    return this.httpClient
+      .put(`${environment.api.announcement.url}/${announcementId}`, {
+        ...updatingAnnouncement,
+      })
+      .pipe(
+        shareReplay(),
+        mergeMap((response) => {
+          if (
+            updatingAnnouncement.addedImages &&
+            updatingAnnouncement.addedImages.length > 0
+          ) {
+            return this.uploadImage(
+              announcementId,
+              updatingAnnouncement.addedImages,
+            )
+          } else {
+            return of(response)
+          }
+        }),
+        mergeMap((response) => {
+          if (
+            updatingAnnouncement.deletedImages &&
+            updatingAnnouncement.deletedImages.length > 0
+          ) {
+            return this.deleteImage(
+              announcementId,
+              updatingAnnouncement.deletedImages,
+            )
+          } else {
+            return of(response)
+          }
+        }),
+      )
   }
 
   deleteAnnouncement(announcementId): Observable<any> {
@@ -121,17 +172,27 @@ export class FeedService {
 
   uploadImage(
     announcementId: number,
-    file: File,
+    file: File[],
   ): Observable<AnnouncementImage> {
     const formData: FormData = new FormData()
 
-    formData.append('file', file)
+    for (let i = 0; i < file.length; i++) {
+      formData.append('images', file[i])
+    }
 
     const uploadUrl = `${environment.api.announcement.url}/${announcementId}/${environment.api.announcement.uploadImage}`
 
-    return this.httpClient.post<AnnouncementImage>(uploadUrl, formData, {
-      reportProgress: true,
-      responseType: 'json',
-    })
+    return this.httpClient
+      .post<AnnouncementImage>(uploadUrl, formData, {
+        reportProgress: true,
+        responseType: 'json',
+      })
+      .pipe(take(1))
+  }
+
+  deleteImage(announcementId: number, paths: string[]) {
+    const deleteUrl = `${environment.api.announcement.url}/${announcementId}/${environment.api.announcement.deleteImage}`
+
+    return this.httpClient.put(deleteUrl, { imageUrls: paths }).pipe(take(1))
   }
 }

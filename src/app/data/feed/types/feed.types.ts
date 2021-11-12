@@ -16,7 +16,7 @@ export enum AnnouncementChannel {
 
 export interface Announcement {
   announcementId: number
-  announcementImages?: string[]
+  announcementImages?: AnnouncementImages[]
   announcementTitle: string
   announcementDescription?: string
   announcementChannels: AnnouncementChannel[]
@@ -38,4 +38,25 @@ export interface CreatingAnnouncement {
   announcementChannels: AnnouncementChannel[]
   announcementStatus: boolean
   organizationId?: number
+  images: File[]
+}
+
+export interface UpdatingAnnouncement {
+  announcementTitle?: string
+  announcementDescription?: string
+  announcementStatus?: boolean
+  addedChannels?: string[]
+  removedChannels?: string[]
+  organizationId?: number
+  addedImages?: File[]
+  deletedImages?: string[]
+}
+
+export interface DeletingAnnouncementImages {
+  imageUrls: string[]
+}
+
+export interface AnnouncementImages {
+  imageUrl: string
+  imageSize: number
 }
