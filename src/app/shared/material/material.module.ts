@@ -23,7 +23,7 @@ import { MatSortModule } from '@angular/material/sort'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { MatProgressBarModule } from '@angular/material/progress-bar'
 import { MatDialogModule } from '@angular/material/dialog'
-
+import { MatRadioModule } from '@angular/material/radio'
 @NgModule({
   declarations: [],
   imports: [
@@ -52,6 +52,7 @@ import { MatDialogModule } from '@angular/material/dialog'
     MatPaginatorModule,
     MatProgressBarModule,
     MatDialogModule,
+    MatRadioModule,
   ],
   exports: [
     MatButtonModule,
@@ -79,6 +80,7 @@ import { MatDialogModule } from '@angular/material/dialog'
     MatPaginatorModule,
     MatProgressBarModule,
     MatDialogModule,
+    MatRadioModule,
   ],
 })
 export class MaterialModule {}

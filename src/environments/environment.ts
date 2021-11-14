@@ -23,6 +23,15 @@ export const environment = {
       deleteImage: 'delete/images',
     },
     userInfoUrl: '/api/userinfo',
+    student: {
+      url: '/api/management/students',
+    },
+    grade: {
+      url: '/api/management/grades',
+    },
+    gradeCategory: {
+      url: '/api/management/grade/category',
+    },
   },
 }
 

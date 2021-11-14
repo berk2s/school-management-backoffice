@@ -28,7 +28,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         (error) => {
           ok = 'failed'
           const translatedMessage = translateMessage(
-            error.error.code ? error.error.code : -1,
+            error.error ? (error.error.code ? error.error.code : -1) : -1,
           )
           if (translatedMessage.trim() !== 'Bilinmeyen bir hata') {
             this.alertService.sendMessage({

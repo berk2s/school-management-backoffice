@@ -46,15 +46,25 @@ const routes: Routes = [
       import('./modules/feed/feed.module').then((m) => m.FeedModule),
   },
   {
-    path: 'organizasyon',
+    path: 'sube',
     component: MainLayoutComponent,
     canActivate: [AuthGuard],
     data: {
       layout: 'classic',
     },
     loadChildren: () =>
-      import('./modules/organization/organization.module').then(
-        (m) => m.OrganizationModule,
+      import('./modules/grade/grade.module').then((m) => m.GradeModule),
+  },
+  {
+    path: '',
+    component: MainLayoutComponent,
+    canActivate: [AuthGuard],
+    data: {
+      layout: 'classic',
+    },
+    loadChildren: () =>
+      import('./modules/user-groups/user-groups.module').then(
+        (m) => m.UserGroupsModule,
       ),
   },
 ]

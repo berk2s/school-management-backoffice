@@ -1,0 +1,88 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-6 border-b bg-card dark:bg-transparent">
+        <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div class="flex flex-wrap items-center font-medium">
+                <div>
+                    <a [routerLink]="['/sube/subeler']" class="whitespace-nowrap text-primary-500">Şubeler</a>
+                </div>
+                <div class="flex items-center ml-1 whitespace-nowrap">
+                    <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                    <a class="ml-1 text-primary-500">Şube ekle</a>
+                </div>
+            </div>
+            <!-- Title -->
+            <div class="mt-2 flex flex-row">
+                <button mat-icon-button (click)="toggleDrawer()">
+                <mat-icon [svgIcon]="'heroicons_outline:menu'"></mat-icon>
+            </button>
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Yeni bir şube ekle
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-10">
+
+        <div class="max-w-3xl">
+
+            <!-- Sectioned form with dividers -->
+            <div class="prose prose-sm max-w-3xl">
+                <h2 class="mt-1">Yeni bir şube oluştururken</h2>
+                <p>
+                    Şubeler kurum organizasyonuzun içinde sınıfları kapsayan bileşendir. Bu sayfada kurumunuza yeni bir şube ekleyebilirsiniz. Oluşturduğunuz şubeye sınıf eklemek için lütfen yeni bir sınıf oluştururun. Yeni bir sınıf oluştururken şube olarak yeni oluşturduğunuz
+                    şubeyi seçmelisiniz. <br />
+
+                    <br />
+
+                    <em>Şubeler, sınıfları kapsar. Örneğin: 12. Sınıf bir şube iken 12. Sınıf şubesine ait oluşturduğunuz 12 / G bir sınıftır.</em>
+                </p>
+            </div>
+
+            <form [formGroup]="createGradeForm" class="flex flex-col mt-4 px-8 pt-10 bg-card shadow rounded overflow-hidden">
+                <p class="text-lg font-medium">Şube bilgileri</p>
+                <p class="text-secondary">
+                    Şube adı ve şube kategorisi girmelisiniz. Şube adının sistemde daha önce kullanılmış olmadığına dikkat ediniz.
+                </p>
+                <mat-divider class="mt-8 mb-10"></mat-divider>
+
+                <div class="flex">
+                    <mat-form-field class="flex-auto">
+                        <input [formControlName]="'gradeName'" matTooltip="Örneğin: 12. Sınıf veya Mezun Grubu" matInput [placeholder]="'Şube adı'">
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:document-text'"></mat-icon>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col gt-xs:flex-row">
+
+                    <mat-form-field class="flex-auto gt-xs:pl-3">
+                        <mat-select [formControlName]="'gradeCategoryId'" [placeholder]="'Şube kategorisi'">
+                            <ng-container *ngFor="let gradeCategory of gradeCategories">
+                                <mat-option [value]="gradeCategory.gradeCategoryId">{{gradeCategory.gradeCategoryName}}</mat-option>
+                            </ng-container>
+                        </mat-select>
+
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:flag'"></mat-icon>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex items-center justify-end border-t -mx-8 mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700">
+                    <button (click)="clearForm(); $event.preventDefault()" mat-button>
+                      Temizle
+                  </button>
+                    <button (click)="submitForm(); $event.preventDefault()" class="px-6 ml-3" mat-flat-button [color]="'primary'">
+                      Oluştur
+                  </button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>

@@ -8,6 +8,18 @@ export interface User {
   phoneNumber: string
   email: string
   organization: Organization
+  userType: UserType
+  isEnabled?: boolean
+  isAccountNonExpired?: boolean
+  isAnnountNonLocked?: boolean
+  isCredentialsNonExpired?: boolean
   createdAt: Date
   lastModifiedAt: Date
+}
+
+export enum UserType {
+  STUDENT,
+  PARENT,
+  TEACHER,
+  USER,
 }

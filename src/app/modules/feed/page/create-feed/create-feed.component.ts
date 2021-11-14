@@ -7,15 +7,7 @@ import {
 } from '@angular/forms'
 import { AlertService } from '@app/alert/alert.service'
 import { ImagePreview } from '@modules/feed/types'
-import { Observable } from 'rxjs'
-import {
-  debounceTime,
-  exhaustMap,
-  take,
-  throttle,
-  throttleTime,
-  withLatestFrom,
-} from 'rxjs/operators'
+import { exhaustMap, take, withLatestFrom } from 'rxjs/operators'
 import { FeedService } from 'src/app/data/feed/service/feed.service'
 import {
   AnnouncementChannel,

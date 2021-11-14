@@ -10,12 +10,6 @@ import { UpdateFeedComponent } from './page/update-feed/update-feed.component'
 @NgModule({
   declarations: [FeedListComponent, CreateFeedComponent, UpdateFeedComponent],
   imports: [CommonModule, FeedRoutingModule, SharedModule],
-  providers: [
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: AuthInterceptor,
-    //   multi: true,
-    // },
-  ],
+  providers: [],
 })
 export class FeedModule {}

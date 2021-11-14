@@ -16,6 +16,7 @@ import { ClassicLayoutComponent } from './layout/classic-layout/classic-layout.c
 import { HTTP_INTERCEPTORS } from '@angular/common/http'
 import { ErrorInterceptor } from '@app/interceptors/error-interceptor'
 import { AuthInterceptor } from '@app/interceptors/auth-interceptor'
+import { SubDrawerLayoutComponent } from './layout/sub-drawer-layout/sub-drawer-layout.component'
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AuthInterceptor } from '@app/interceptors/auth-interceptor'
     AuthLayoutComponent,
     MainLayoutComponent,
     ClassicLayoutComponent,
+    SubDrawerLayoutComponent,
   ],
   imports: [
     BrowserModule,

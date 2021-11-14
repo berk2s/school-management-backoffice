@@ -38,7 +38,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'Şube',
         type: 'basic',
         icon: 'heroicons_outline:academic-cap',
-        link: '/organizasyon/sube',
+        link: '/sube',
       },
     ],
   },

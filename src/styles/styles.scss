@@ -1,1 +1,7 @@
 @import '/src/@fuse/styles/themes.scss';
+.hoverable {
+    transition: .2s;
+    &:hover {
+        @apply bg-card;
+    }
+}

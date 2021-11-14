@@ -1,3 +1,11 @@
+export interface Pagination {
+  length: number
+  size: number
+  page: number
+  sortedBy: string
+  order: SortDirection
+}
+
 export interface Page<T> {
   content: T[]
   pageable: {
