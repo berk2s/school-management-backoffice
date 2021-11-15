@@ -108,7 +108,7 @@ export class UpdateGradeComponent implements OnInit, OnDestroy {
 
           this.alertService.sendMessage({
             alertTitle: 'Başarılı',
-            alertContent: `Şube başarılı bir şekilde düzenlendi`,
+            alertContent: `Şube başarılı bir şekilde düzenlendi.`,
             alertType: 'success',
           })
         })

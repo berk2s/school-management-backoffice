@@ -32,6 +32,9 @@ export const environment = {
     gradeCategory: {
       url: '/api/management/grade/category',
     },
+    lesson: {
+      url: '/api/management/lessons',
+    },
   },
 }
 

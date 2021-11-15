@@ -56,6 +56,28 @@ const routes: Routes = [
       import('./modules/grade/grade.module').then((m) => m.GradeModule),
   },
   {
+    path: 'sinif',
+    component: MainLayoutComponent,
+    canActivate: [AuthGuard],
+    data: {
+      layout: 'classic',
+    },
+    loadChildren: () =>
+      import('./modules/classroom/classroom.module').then(
+        (m) => m.ClassroomModule,
+      ),
+  },
+  {
+    path: 'ders',
+    component: MainLayoutComponent,
+    canActivate: [AuthGuard],
+    data: {
+      layout: 'classic',
+    },
+    loadChildren: () =>
+      import('./modules/lesson/lesson.module').then((m) => m.LessonModule),
+  },
+  {
     path: '',
     component: MainLayoutComponent,
     canActivate: [AuthGuard],
