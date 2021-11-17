@@ -19,4 +19,10 @@ export class UserService {
       shareReplay(),
     )
   }
+
+  deleteUser(userId: string): Observable<any> {
+    return this.httpClient
+      .delete(`${environment.api.user.url}/${userId}`)
+      .pipe(shareReplay())
+  }
 }

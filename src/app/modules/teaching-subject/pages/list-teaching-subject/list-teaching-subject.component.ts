@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog'
 import { PageEvent } from '@angular/material/paginator'
 import { Sort } from '@angular/material/sort'
 import { AlertService } from '@app/alert/alert.service'
-import { SubDrawerLayoutComponent } from '@layouts/sub-drawer-layout/sub-drawer-layout.component'
 import { ConfirmationDialogComponent } from '@shared/components/confirmation-dialog/confirmation-dialog.component'
 import { Observable, of, Subject } from 'rxjs'
 import {
@@ -16,17 +15,17 @@ import {
   takeUntil,
   tap,
 } from 'rxjs/operators'
-import { ClassroomService } from 'src/app/data/classroom/service/classroom.service'
-import { Classroom } from 'src/app/data/classroom/types/classroom.types'
 import { Pagination, SortDirection } from 'src/app/data/page.types'
+import { TeachingSubjectService } from 'src/app/data/teaching-subject/service/teaching-subject.service'
+import { TeachingSubject } from 'src/app/data/teaching-subject/types/teaching-subject.types'
 
 @Component({
-  selector: 'app-list-classroom',
-  templateUrl: './list-classroom.component.html',
-  styleUrls: ['./list-classroom.component.scss'],
+  selector: 'app-list-teaching-subject',
+  templateUrl: './list-teaching-subject.component.html',
+  styleUrls: ['./list-teaching-subject.component.scss'],
 })
-export class ListClassroomComponent implements OnInit, OnDestroy {
-  classrooms$: Observable<Classroom[]>
+export class ListTeachingSubjectComponent implements OnInit, OnDestroy {
+  teachingSubjects$: Observable<TeachingSubject[]>
 
   pagination: Pagination
   pageEvent: PageEvent
@@ -42,19 +41,20 @@ export class ListClassroomComponent implements OnInit, OnDestroy {
   private _unsubscribeAll: Subject<any> = new Subject<any>()
 
   constructor(
-    private classroomService: ClassroomService,
+    private teachingSubjectService: TeachingSubjectService,
     private alertService: AlertService,
     private dialog: MatDialog,
-    private subDrawerLayoutComponent: SubDrawerLayoutComponent,
   ) {}
 
   ngOnInit(): void {
     this.isLoading = true
 
-    this.classrooms$ = this.classroomService.classroom$.pipe(shareReplay())
+    this.teachingSubjects$ = this.teachingSubjectService.teachingSubjects$.pipe(
+      shareReplay(),
+    )
 
-    this.classroomService
-      .getClassrooms()
+    this.teachingSubjectService
+      .getTeachingSubjects()
       .pipe(
         take(1),
         tap(() => {
@@ -63,7 +63,7 @@ export class ListClassroomComponent implements OnInit, OnDestroy {
       )
       .subscribe()
 
-    this.classroomService.pagination$
+    this.teachingSubjectService.pagination$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((pagination) => {
         this.pagination = pagination
@@ -75,8 +75,8 @@ export class ListClassroomComponent implements OnInit, OnDestroy {
         debounceTime(300),
         switchMap((key) => {
           this.isLoading = true
-          return this.classroomService
-            .getClassrooms(
+          return this.teachingSubjectService
+            .getTeachingSubjects(
               0,
               10,
               this.sort?.active,
@@ -101,8 +101,8 @@ export class ListClassroomComponent implements OnInit, OnDestroy {
 
     this.isLoading = true
 
-    this.classroomService
-      .getClassrooms(
+    this.teachingSubjectService
+      .getTeachingSubjects(
         event.pageIndex,
         event.pageSize,
         sort?.active,
@@ -132,8 +132,13 @@ export class ListClassroomComponent implements OnInit, OnDestroy {
     this.sort = sort
     this.isLoading = true
 
-    this.classroomService
-      .getClassrooms(page, size, sort.active, sort.direction as SortDirection)
+    this.teachingSubjectService
+      .getTeachingSubjects(
+        page,
+        size,
+        sort.active,
+        sort.direction as SortDirection,
+      )
       .pipe(
         take(1),
         tap(() => {
@@ -143,12 +148,15 @@ export class ListClassroomComponent implements OnInit, OnDestroy {
       .subscribe()
   }
 
-  removeClassroom(classRoomId: number, classRoomTag: string) {
+  removeTeachingSubject(
+    teachingSubjectId: number,
+    teachingSubjectName: string,
+  ) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '250px',
       data: {
-        title: `${classRoomTag} adlı sınıf`,
-        desc: 'Bu sınıfı silmek için emin misiniz?',
+        title: `${teachingSubjectName} adlı ders`,
+        desc: 'Bu dersi silmek için emin misin?',
       },
     })
 
@@ -160,43 +168,41 @@ export class ListClassroomComponent implements OnInit, OnDestroy {
         take(1),
         exhaustMap((result) => {
           if (result && result === true) {
-            return this.classroomService.deleteClassroom(classRoomId).pipe(
-              exhaustMap(() => {
-                return this.classroomService
-                  .getClassrooms(
-                    this.pageEvent?.pageIndex,
-                    this.pageEvent?.pageSize,
-                    this.sort?.active,
-                    this.sort?.direction as SortDirection,
-                  )
-                  .pipe(
-                    take(1),
-                    tap(() => {
-                      this.isLoading = false
-                    }),
-                  )
-              }),
-            )
+            return this.teachingSubjectService
+              .deleteTeachingSubject(teachingSubjectId)
+              .pipe(
+                exhaustMap(() => {
+                  return this.teachingSubjectService
+                    .getTeachingSubjects(
+                      this.pageEvent?.pageIndex,
+                      this.pageEvent?.pageSize,
+                      this.sort?.active,
+                      this.sort?.direction as SortDirection,
+                    )
+                    .pipe(
+                      take(1),
+                      tap(() => {
+                        this.isLoading = false
+                      }),
+                    )
+                }),
+              )
           } else {
             return of(false)
           }
         }),
       )
-      .subscribe((classrooms: Classroom[] | boolean) => {
+      .subscribe((teachingSubjects: TeachingSubject[] | boolean) => {
         this.isLoading = false
 
-        if (classrooms) {
+        if (teachingSubjects) {
           this.alertService.sendMessage({
             alertTitle: 'Başarılı',
-            alertContent: 'Sınıfı başarılı bir şekilde silindi',
+            alertContent: 'Öğretmen branşı başarılı bir şekilde silindi',
             alertType: 'success',
           })
         }
       })
-  }
-
-  toggleDrawer() {
-    this.subDrawerLayoutComponent.matDrawer.toggle()
   }
 
   ngOnDestroy(): void {

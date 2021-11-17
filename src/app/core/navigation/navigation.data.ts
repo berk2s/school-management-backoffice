@@ -138,7 +138,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'Öğretmenler',
         type: 'basic',
         icon: 'mat_outline:supervised_user_circle',
-        link: '/apps/academy',
+        link: '/ogretmenler',
       },
       {
         id: 'users.parents',

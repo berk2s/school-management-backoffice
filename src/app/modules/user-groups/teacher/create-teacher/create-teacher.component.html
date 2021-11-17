@@ -1,0 +1,107 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div class="flex flex-wrap items-center font-medium">
+                <div>
+                    <a [routerLink]="['/ogretmenler']" class="whitespace-nowrap text-primary-500">Öğretmenler</a>
+                </div>
+                <div class="flex items-center ml-1 whitespace-nowrap">
+                    <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                    <a class="ml-1 text-primary-500">Öğretmen ekle</a>
+                </div>
+            </div>
+
+            <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                Yeni bir öğretmenler ekle
+            </h2>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-10">
+
+        <div class="max-w-3xl">
+
+            <form autocomplete="off" [formGroup]="createTeacherForm" class="flex flex-col mt-4 px-8 pt-10 bg-card shadow rounded overflow-hidden">
+                <p class="text-lg font-medium">Öğretmen Bilgileri</p>
+                <p class="text-secondary">
+                    Öğretmen bilgilerini girerken; telefon numarası, kullanıcı adı ve (varsa) e-posta adresinin sistemde daha önce bir kullanıcıya ait olmadığına dikkat ediniz.
+                </p>
+                <mat-divider class="mt-8 mb-10"></mat-divider>
+
+                <div class="flex">
+                    <mat-form-field class="flex-auto">
+                        <input autocomplete="off" [formControlName]="'firstName'" matInput [placeholder]="'İsim'">
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'mat_outline:person'"></mat-icon>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex">
+                    <mat-form-field class="flex-auto">
+                        <input autocomplete="off" [formControlName]="'lastName'" matInput [placeholder]="'Soyisim'">
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'mat_outline:person'"></mat-icon>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex">
+                    <mat-form-field class="flex-auto">
+                        <input [formControlName]="'username'" matInput [placeholder]="'Kullanıcı adı'">
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'mat_outline:badge'"></mat-icon>
+                    </mat-form-field>
+                </div>
+
+
+                <div class="flex">
+                    <mat-form-field class="flex-auto">
+                        <input [formControlName]="'phoneNumber'" matTooltip="05 ile başlayınız" matInput [placeholder]="'Telefon Numarası'">
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'mat_outline:phone'"></mat-icon>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex">
+                    <mat-form-field class="flex-auto">
+                        <input [formControlName]="'email'" matInput [placeholder]="'E-Posta'">
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'mat_outline:email'"></mat-icon>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex">
+                    <mat-form-field class="flex-auto">
+                        <input [formControlName]="'password'" matInput [placeholder]="'Geciçi şifre'">
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'mat_outline:password'"></mat-icon>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col gt-xs:flex-row">
+
+                    <mat-form-field class="flex-auto gt-xs:pl-3">
+                        <mat-select [formControlName]="'teachingSubjects'" [placeholder]="'Öğretmen Branşı'" [multiple]="true">
+                            <ng-container *ngFor="let teachingSubject of teachingSubjects">
+                                <mat-option [value]="teachingSubject.teachingSubjectId">{{teachingSubject.subjectName}}</mat-option>
+                            </ng-container>
+                        </mat-select>
+
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:flag'"></mat-icon>
+                    </mat-form-field>
+                </div>
+
+                <div class="flex items-center justify-end border-t -mx-8 mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700">
+                    <button (click)="clearForm(); $event.preventDefault()" mat-button>
+                Temizle
+            </button>
+                    <button (click)="createTeacher(); $event.preventDefault()" class="px-6 ml-3" mat-flat-button [color]="'primary'">
+                Oluştur
+            </button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+<div class="absolute inset-x-0 " *ngIf="isLoading">
+    <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+</div>

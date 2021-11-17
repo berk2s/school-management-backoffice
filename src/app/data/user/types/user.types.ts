@@ -17,6 +17,17 @@ export interface User {
   lastModifiedAt: Date
 }
 
+export interface CreatingUser {
+  username: string
+  firstName: string
+  lastName: string
+  phoneNumber: string
+  password: string
+  email?: string
+  organizationId?: number
+  userType?: UserType
+}
+
 export enum UserType {
   STUDENT,
   PARENT,

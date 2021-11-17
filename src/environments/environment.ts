@@ -35,6 +35,18 @@ export const environment = {
     lesson: {
       url: '/api/management/lessons',
     },
+    teachingSubject: {
+      url: '/api/management/teachingsubjects',
+    },
+    teacher: {
+      url: '/api/management/teachers',
+    },
+    user: {
+      url: '/api/management/users',
+    },
+    classroom: {
+      url: '/api/management/classrooms',
+    },
   },
 }
 

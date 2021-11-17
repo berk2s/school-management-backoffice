@@ -37,7 +37,7 @@ export class CreateGradeComponent implements OnInit, OnDestroy {
       .pipe(pluck('gradeCategories'), takeUntil(this._unsubscribeAll))
       .subscribe((gradeCategories: GradeCategory[]) => {
         if (!gradeCategories) {
-          this.router.navigateByUrl('../')
+          this.router.navigateByUrl('/sinif')
           this.alertService.sendMessage({
             alertTitle: 'Hay aksi',
             alertContent: 'Bir şeyler ters gitti, tekrar deneyiniz.',

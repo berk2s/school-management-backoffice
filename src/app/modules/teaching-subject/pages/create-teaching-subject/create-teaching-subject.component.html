@@ -1,0 +1,61 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div class="flex flex-wrap items-center font-medium">
+                <div>
+                    <a [routerLink]="['/ogretmen-branslari']" class="whitespace-nowrap text-primary-500">Öğretmen Branşları</a>
+                </div>
+                <div class="flex items-center ml-1 whitespace-nowrap">
+                    <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                    <a class="ml-1 text-primary-500">Branş ekle</a>
+                </div>
+            </div>
+
+            <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                Yeni bir branş ekle
+            </h2>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-10">
+
+        <div class="max-w-3xl">
+
+            <form [formGroup]="createTeachingSubjectForm" class="flex flex-col mt-4 px-8 pt-10 bg-card shadow rounded overflow-hidden">
+                <p class="text-lg font-medium">Branş bilgileri</p>
+                <p class="text-secondary">
+                    Branş adı girmelisiniz. Branş adının sistemde daha önce kullanılmış olmadığına dikkat ediniz.
+                </p>
+                <mat-divider class="mt-8 mb-10"></mat-divider>
+
+                <div class="flex">
+                    <mat-form-field class="flex-auto">
+                        <input [formControlName]="'subjectName'" matTooltip="Örneğin: Matematik veya Soru Çözüm" matInput [placeholder]="'Ders adı'">
+                        <mat-icon class="icon-size-5" matPrefix [svgIcon]="'heroicons_solid:document-text'"></mat-icon>
+                    </mat-form-field>
+                </div>
+                <div class="flex flex-col gt-xs:flex-row">
+                </div>
+
+                <div class="flex items-center justify-end border-t -mx-8 mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700">
+                    <button (click)="clearForm(); $event.preventDefault()" mat-button>
+                  Temizle
+              </button>
+                    <button (click)="submitForm(); $event.preventDefault()" class="px-6 ml-3" mat-flat-button [color]="'primary'">
+                  Oluştur
+              </button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+<div class="absolute inset-x-0 " *ngIf="isLoading">
+    <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+</div>

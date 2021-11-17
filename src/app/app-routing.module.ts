@@ -78,6 +78,18 @@ const routes: Routes = [
       import('./modules/lesson/lesson.module').then((m) => m.LessonModule),
   },
   {
+    path: 'ogretmen-branslari',
+    component: MainLayoutComponent,
+    canActivate: [AuthGuard],
+    data: {
+      layout: 'classic',
+    },
+    loadChildren: () =>
+      import('./modules/teaching-subject/teaching-subject.module').then(
+        (m) => m.TeachingSubjectModule,
+      ),
+  },
+  {
     path: '',
     component: MainLayoutComponent,
     canActivate: [AuthGuard],
