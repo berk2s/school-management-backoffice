@@ -47,6 +47,9 @@ export const environment = {
     classroom: {
       url: '/api/management/classrooms',
     },
+    parent: {
+      url: '/api/management/parents',
+    },
   },
 }
 

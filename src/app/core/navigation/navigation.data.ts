@@ -145,7 +145,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'Veliler',
         type: 'basic',
         icon: 'iconsmind:business_manwoman',
-        link: '/apps/academy',
+        link: '/veliler',
       },
     ],
   },
